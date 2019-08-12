@@ -1,0 +1,26 @@
+{
+  "name": "webpacktemplate",
+  "version": "1.0.0",
+  "description": "My template",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microlabig/webpack1.git"
+  },
+  "author": "Igor Bezmestin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microlabig/webpack1/issues"
+  },
+  "homepage": "https://github.com/microlabig/webpack1#readme",
+  "devDependencies": {
+    "path": "^0.12.7",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.8.0"
+  }
+}
