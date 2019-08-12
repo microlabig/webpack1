@@ -11,6 +11,14 @@ module.exports = {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/dist' // для devservera
     },
+    // loaders
+    module: { 
+        rules: [{ // правила (массив объектов)
+            test: /\.js$/, // обращаемся ко всем js файлам
+            loaders: 'babel-loader',
+            exclude: '/node_modules/' // исключаем папку node_modules
+        }]
+    },
     // настройка devserver
     devServer: {
         overlay: true
