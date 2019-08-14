@@ -1,8 +1,10 @@
 // основной файл (точка входа)
 
 import './js/common';
+import './css/main.css';
+import './scss/main.scss';
 
-// способы импортирования vue.js
+// способы импортирования vue.js:
 
 //1
 //import 'vue';
