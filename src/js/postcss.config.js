@@ -1,18 +1,13 @@
-// npm install postcss-loader autoprefixer css-mqpacker cssnano --save-dev
+// npm install postcss-loader autoprefixer css-mqpacker cssnano postcss-pxtorem postcss-inline-svg --save-dev
 
 module.exports = {
     plugins: [
         require('autoprefixer'), // автопрефиксер
-        require('css-mqpacker'), // группировка всех одинаковых медиазапросов        
-        require("postcss-pxtorem")({ // px2rem
-            rootValue: 16,
-            propList: ["*", "!*border*"],
-            selectorBlackList: [/^html$/]
-        }),
-        /* require("postcss-inline-svg")({ // инлайновые svg
+        require('css-mqpacker'), // группировка всех одинаковых медиазапросов 
+        require('postcss-inline-svg')({ // инлайновые svg
             removeFill: true,
-            path: "./src/images/icons"
-        }), */
+            path: "../img/icons"
+        }),
         require('cssnano') ({ // уменьшение css
             preset: [
                 'default', {
@@ -22,5 +17,10 @@ module.exports = {
                 }
             ]
         }),
+        require('postcss-pxtorem')({ // px2rem
+            rootValue: 16,
+            propList: ["*", "!*border*"],
+            selectorBlackList: [/^html$/]
+        })
     ]
 }

@@ -13,6 +13,6 @@ import './scss/main.scss';
 // window.Vue = require('vue');
 
 //3
-import Vue from 'vue';
-Vue.use();
+//import Vue from 'vue';
+//Vue.use();
 

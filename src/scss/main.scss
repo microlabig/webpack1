@@ -1,7 +1,7 @@
 @import 'layout/mixins.scss';
 
 h1 {
-    color: red;
+    color: rgba(#f00, 0.5);
 }
 h2 {
     color: red;
@@ -10,11 +10,9 @@ h3 {
     color: red;
     font-size: 10px;    
 }
-/* 
+
 .wrapper {
-    background-image: url(require('../img/icons/api-map.svg'));
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: svg-load('api-map.svg', fill=green, stroke=red) center center no-repeat / contain;
     width: 300px;
     height: 300px;
-} */
+}
