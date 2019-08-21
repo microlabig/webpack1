@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require("svg-sprite-loader/plugin");
 const { VueLoaderPlugin } = require('vue-loader');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const PATHS = { // глобальная константа
     src: path.join(__dirname,'../src'),
@@ -17,13 +18,28 @@ module.exports = {
     },
     // точка входа
     entry: {
-        app: PATHS.src
+        app: PATHS.src,
+        lk: `${PATHS.src}/lk.js` // напр., личный кабинет
     },
     // точка выхода
     output: {
-        filename: `${PATHS.assets}js/[name].js`, // будет app.js
+        filename: `${PATHS.assets}js/[name].[hash].js`, // будет app.js
         path: PATHS.dist,
         publicPath: '/' // для devservera
+    },
+    // для разделения js-файлов (напр., vendor.js, app.js, lk.js, ...)    
+    // https://tproger.ru/translations/configure-webpack4/
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    name: 'vendors',
+                    test: /node_modules/,
+                    chunks: 'all',
+                    enforce: true
+                }
+            }
+        }
     },
     // loaders
     module: { 
@@ -129,13 +145,15 @@ module.exports = {
     },
     // зарегистрируем используемые плагины
     plugins: [ 
+        new CleanWebpackPlugin(), // очистка output.path
         new MiniCssExtractPlugin({
-            filename: `${PATHS.assets}css/[name].css` // на выходе будет app.css
+            filename: `${PATHS.assets}css/[name].[hash].css` // на выходе будет app.css
         }),
         new HtmlWebpackPlugin({
-            hash: false,
+            // https://github.com/jaketrent/html-webpack-template/blob/legacy/index.html
             template: `${PATHS.src}/index.html`,
-            filename: './index.html'
+            filename: './index.html',
+            inject: false // отключает автоматическую вставку css (linkrel в head) и js (script вниз body)
         }),
         new CopyWebpackPlugin([
             {
