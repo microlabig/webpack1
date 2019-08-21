@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // для по�
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require("svg-sprite-loader/plugin");
+const { VueLoaderPlugin } = require('vue-loader');
 
 const PATHS = { // глобальная константа
     src: path.join(__dirname,'../src'),
@@ -27,92 +28,105 @@ module.exports = {
     // loaders
     module: { 
         rules: [ // правила (массив объектов)
-        { 
-            test: /\.(png|jpe?g|gif|woff2?)$/, // обращаемся ко всем изображениям и шрифтам
-            loaders: 'file-loader',
-            options: {
-                name: '[name].[ext]'
-            }
-        },
-        {
-            test: /\.svg$/,
-            use: [
-              {
-                loader: "svg-sprite-loader",
+            { 
+                test: /\.(png|jpe?g|gif|woff2?)$/, // обращаемся ко всем изображениям и шрифтам
+                loaders: 'file-loader',
                 options: {
-                  extract: true,
-                  //spriteFilename: svgPath => `sprite${svgPath.substr(-4)}`
+                    name: '[name].[ext]'
                 }
-              },
-              "svg-transform-loader",
-              {
-                loader: "svgo-loader",
+            },
+            {
+                test: /\.svg$/,
+                use: [
+                {
+                    loader: "svg-sprite-loader",
+                    options: {
+                    extract: true,
+                    //spriteFilename: svgPath => `sprite${svgPath.substr(-4)}`
+                    }
+                },
+                "svg-transform-loader",
+                {
+                    loader: "svgo-loader",
+                    options: {
+                    plugins: [
+                        { removeTitle: true },
+                        {
+                        removeAttrs: {
+                            attrs: "(fill|stroke)"
+                        }
+                        }
+                    ]
+                    }
+                }
+                ]
+            },        
+            { 
+                test: /\.js$/, // обращаемся ко всем js файлам
+                loaders: 'babel-loader',
+                exclude: '/node_modules/' // исключаем папку node_modules
+            },
+            { 
+                test: /\.vue$/, // обращаемся ко всем vue файлам
+                loaders: 'vue-loader',
                 options: {
-                  plugins: [
-                    { removeTitle: true },
+                    loader: {
+                        scss: 'vue-style-loader!css-loader!sass-loader'
+                    }
+                }
+            },
+            {
+                test: /\.scss$/, // обработка scss
+                use: [
+                    "style-loader",
+                    MiniCssExtractPlugin.loader,
                     {
-                      removeAttrs: {
-                        attrs: "(fill|stroke)"
-                      }
+                        loader: "css-loader",
+                        options: {sourceMap: true}
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            sourceMap: true, 
+                            config: {
+                                path: `${PATHS.src}/js/postcss.config.js`
+                            } 
+                        }
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {sourceMap: true}
                     }
-                  ]
-                }
-              }
-            ]
-        },
-        
-        { 
-            test: /\.js$/, // обращаемся ко всем js файлам
-            loaders: 'babel-loader',
-            exclude: '/node_modules/' // исключаем папку node_modules
-        },
-        {
-            test: /\.scss$/, // обработка scss
-            use: [
-                "style-loader",
-                MiniCssExtractPlugin.loader,
-                {
-                    loader: "css-loader",
-                    options: {sourceMap: true}
-                },
-                {
-                    loader: "postcss-loader",
-                    options: {
-                        sourceMap: true, 
-                        config: {
-                            path: `${PATHS.src}/js/postcss.config.js`
-                        } 
+                    
+                ]
+            },
+            {
+                test: /\.css$/, // обработка css
+                use: [
+                    "style-loader",
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: "css-loader",
+                        options: {sourceMap: true}
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            sourceMap: true, 
+                            config: {
+                                path: `${PATHS.src}/js/postcss.config.js`
+                            } 
+                        }
                     }
-                },
-                {
-                    loader: "sass-loader",
-                    options: {sourceMap: true}
-                }
-                
-            ]
-        },
-        {
-            test: /\.css$/, // обработка css
-            use: [
-                "style-loader",
-                MiniCssExtractPlugin.loader,
-                {
-                    loader: "css-loader",
-                    options: {sourceMap: true}
-                },
-                {
-                    loader: "postcss-loader",
-                    options: {
-                        sourceMap: true, 
-                        config: {
-                            path: `${PATHS.src}/js/postcss.config.js`
-                        } 
-                    }
-                }
-            ]
+                ]
+            }
+        ]
+    },
+    resolve: {        
+        alias: { // для сокращения в вызовах 
+            'vue$': 'vue/dist/vue.js' // vue заменится на vue/dist/vue.js
         }
-    ]
-    },    
+    },
     // зарегистрируем используемые плагины
     plugins: [ 
         new MiniCssExtractPlugin({
@@ -135,6 +149,7 @@ module.exports = {
         ]),
         new SpriteLoaderPlugin({ 
             plainSprite: true 
-        })
+        }),
+        new VueLoaderPlugin()
     ]
 }
