@@ -5,7 +5,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require("svg-sprite-loader/plugin");
 const { VueLoaderPlugin } = require('vue-loader');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin'); // вместо uglifyJS
 
 // Main consts
 const PATHS = { // глобальная константа
@@ -25,8 +26,8 @@ module.exports = {
     },
     // точка входа
     entry: {
-        app: PATHS.src,
-        lk: `${PATHS.src}/lk.js` // напр., личный кабинет
+        app: ["@babel/polyfill/noConflict", PATHS.src], // Если вам нужно загрузить полифайл (@babel/polyfill) более одного раза, используйте @babel/polyfill/noConflict, чтобы обойти предупреждение.
+        lk: ["@babel/polyfill/noConflict", `${PATHS.src}/lk.js`] // напр., личный кабинет
     },
     // точка выхода
     output: {
@@ -37,6 +38,15 @@ module.exports = {
     // для разделения js-файлов (напр., vendor.js, app.js, lk.js, ...)    
     // https://tproger.ru/translations/configure-webpack4/
     optimization: {
+        minimizer: [
+            new TerserPlugin({
+                test: /\.js(\?.*)?$/i,
+                exclude: '/node_modules/',
+                cache: true,
+                parallel: true,
+                sourceMap: false
+            }),
+        ],
         splitChunks: {
             cacheGroups: {
                 vendor: {
@@ -67,10 +77,15 @@ module.exports = {
             },
             { 
                 test: /\.pug$/, // обращаемся к pug
-                loaders: 'pug-loader',
-                options: {
-                    name: '[name].[ext]'
-                }
+                oneOf: [ // Массив Правил, из которого используется только первое соответствующее Правило, когда Правило совпадает.
+                    {
+                      resourceQuery: /^\?vue/,
+                      use: ["pug-plain-loader"]
+                    },
+                    {
+                      use: ["pug-loader"]
+                    }
+                  ]
             },
             {
                 test: /\.svg$/,
@@ -89,9 +104,9 @@ module.exports = {
                     plugins: [
                         { removeTitle: true },
                         {
-                        removeAttrs: {
-                            attrs: "(fill|stroke)"
-                        }
+                            removeAttrs: {
+                                attrs: "(fill|stroke)"
+                            }
                         }
                     ]
                     }
@@ -101,7 +116,11 @@ module.exports = {
             { 
                 test: /\.js$/, // обращаемся ко всем js файлам
                 loaders: 'babel-loader',
-                exclude: '/node_modules/' // исключаем папку node_modules
+                exclude: '/node_modules/', // исключаем папку node_modules
+                options: {
+                    presets: ['@babel/preset-env'],
+                    plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт https://habr.com/ru/post/455200/                    
+                }
             },
             { 
                 test: /\.vue$/, // обращаемся ко всем vue файлам
@@ -198,7 +217,7 @@ module.exports = {
             plainSprite: true 
         }),
         new VueLoaderPlugin(),
-        
+
         // Automatic creations any html pages (Don't forget to RERUN dev server)
         ...PAGES.map( page => new HtmlWebpackPlugin({
             template: `${PAGES_DIR}/${page}`, // .pug

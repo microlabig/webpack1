@@ -1,9 +1,7 @@
-<template>
-    <section>
-        <div class="container">
-            <h1>Webpack and {{message}}</h1>
-        </div>
-    </section>
+<template lang="pug">
+    section
+        .container
+        h1 Webpack and {{message}}
 </template>
 
 <script>
@@ -13,8 +11,8 @@ export default {
             message: null
         }
     },
-    created() {
-        this.message = this.$store.getters.getMessage;
+    async created() {
+        this.message = await this.$store.getters.getMessage;
     }
 }
 </script>
