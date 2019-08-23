@@ -6,6 +6,7 @@
 import './js/common';
 
 // CSS
+import 'normalize.css';
 import './assets/css/main.css';
 
 // SCSS

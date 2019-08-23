@@ -77,7 +77,7 @@ module.exports = {
             },
             { 
                 test: /\.pug$/, // обращаемся к pug
-                oneOf: [ // Массив Правил, из которого используется только первое соответствующее Правило, когда Правило совпадает.
+                oneOf: [ // oneOf - массив Правил, из которого используется только первое соответствующее Правило, когда Правило совпадает.
                     {
                       resourceQuery: /^\?vue/,
                       use: ["pug-plain-loader"]
@@ -93,8 +93,8 @@ module.exports = {
                 {
                     loader: "svg-sprite-loader",
                     options: {
-                    extract: true,
-                    //spriteFilename: svgPath => `sprite${svgPath.substr(-4)}`
+                        extract: true,
+                        //spriteFilename: svgPath => `sprite${svgPath.substr(-4)}`
                     }
                 },
                 "svg-transform-loader",
@@ -119,7 +119,7 @@ module.exports = {
                 exclude: '/node_modules/', // исключаем папку node_modules
                 options: {
                     presets: ['@babel/preset-env'],
-                    plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт https://habr.com/ru/post/455200/                    
+                    plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт https://habr.com/ru/post/455200/ и для async/await
                 }
             },
             { 
@@ -127,7 +127,7 @@ module.exports = {
                 loaders: 'vue-loader',
                 options: {
                     loader: {
-                        scss: 'vue-style-loader!css-loader!sass-loader'
+                        scss: 'vue-style-loader!css-loader!sass-loader' // указывает на обработку css-стилей
                     }
                 }
             },
@@ -182,7 +182,8 @@ module.exports = {
         alias: { // для сокращения в вызовах 
             '~' : 'src', // универсальный заменитель (напр., для импорта во vue-файлах)
             'vue$': 'vue/dist/vue.js', // vue заменится на vue/dist/vue.js
-        }
+        },
+        extensions: ["*", ".js", ".vue", ".json"] // дефолтные расширения файлов, которые наше прилодение будет импортировать
     },
     // зарегистрируем используемые плагины
     plugins: [ 
