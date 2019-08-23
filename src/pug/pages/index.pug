@@ -1,0 +1,37 @@
+extends ../layout/main.pug
+
+block variables
+    - var title = 'Заголовок'
+
+block content
+    section
+        .container
+            button(
+                type="button"
+                @click="showComponent"
+            ) showComponent
+            example-component(
+                v-if="component"
+            )
+            example-component(
+                v-if="component"
+            )
+            +item('Заголовок h2','Описание')
+            +item('Заголовок h2','Описание')
+
+//- block stylesheet
+//-     script(type="text/javascript").
+//-         let head = document.querySelector('head');
+//-         //let htmlWebpackPlugin = require('html-webpack-plugin');
+//-         import HtmlWebpackPlugin from 'html-webpack-plugin';
+//-         for (var css in htmlWebpackPlugin.files.css) {
+//-             let link = document.createElement('link');
+//-             link.setAttribute('rel', 'stylesheet');
+//-             link.setAttribute('href', HtmlWebpackPlugin.files.css[css]);
+//-             head.addChild(link);
+//-         }
+
+
+    //- <% for (var css in htmlWebpackPlugin.files.css) { %>
+        //- link(rel="stylesheet", href="<%= htmlWebpackPlugin.files.css[css] %>")
+        //- <% } %>

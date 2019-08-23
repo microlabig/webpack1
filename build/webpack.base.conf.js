@@ -1,4 +1,5 @@
 const path = require('path'); // для корректного поиска путей на кроссплатформах
+const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // для подключения css в index.js
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -6,11 +7,17 @@ const SpriteLoaderPlugin = require("svg-sprite-loader/plugin");
 const { VueLoaderPlugin } = require('vue-loader');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
+// Main consts
 const PATHS = { // глобальная константа
     src: path.join(__dirname,'../src'),
     dist: path.join(__dirname,'../dist'),
     assets: 'assets/'
 }
+
+// Pages consts
+// const PAGES_DIR = PATHS.src
+const PAGES_DIR = `${PATHS.src}/pug/pages`
+const PAGES = fs.readdirSync(PAGES_DIR).filter(filename => filename.endsWith('.pug'));
 
 module.exports = {
     externals: { // для получения доступа к вышестоящей константе PATHS для других конфигов
@@ -47,6 +54,20 @@ module.exports = {
             { 
                 test: /\.(png|jpe?g|gif|woff2?)$/, // обращаемся ко всем изображениям и шрифтам
                 loaders: 'file-loader',
+                options: {
+                    name: '[name].[ext]'
+                }
+            },
+            { 
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, // обращаемся к шрифтам
+                loaders: 'file-loader',
+                options: {
+                    name: '[name].[ext]'
+                }
+            },
+            { 
+                test: /\.pug$/, // обращаемся к pug
+                loaders: 'pug-loader',
                 options: {
                     name: '[name].[ext]'
                 }
@@ -105,7 +126,7 @@ module.exports = {
                         options: {
                             sourceMap: true, 
                             config: {
-                                path: `${PATHS.src}/js/postcss.config.js`
+                                path: `./postcss.config.js`
                             } 
                         }
                     },
@@ -130,7 +151,7 @@ module.exports = {
                         options: {
                             sourceMap: true, 
                             config: {
-                                path: `${PATHS.src}/js/postcss.config.js`
+                                path: `./postcss.config.js`
                             } 
                         }
                     }
@@ -140,7 +161,8 @@ module.exports = {
     },
     resolve: {        
         alias: { // для сокращения в вызовах 
-            'vue$': 'vue/dist/vue.js' // vue заменится на vue/dist/vue.js
+            '~' : 'src', // универсальный заменитель (напр., для импорта во vue-файлах)
+            'vue$': 'vue/dist/vue.js', // vue заменится на vue/dist/vue.js
         }
     },
     // зарегистрируем используемые плагины
@@ -149,16 +171,23 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: `${PATHS.assets}css/[name].[hash].css` // на выходе будет app.css
         }),
+        /* 
+        // для .html
         new HtmlWebpackPlugin({
             // https://github.com/jaketrent/html-webpack-template/blob/legacy/index.html
             template: `${PATHS.src}/index.html`,
             filename: './index.html',
-            inject: false // отключает автоматическую вставку css (linkrel в head) и js (script вниз body)
+            inject: false // false - отключает автоматическую вставку css (linkrel в head) и js (script вниз body)
         }),
+        */
         new CopyWebpackPlugin([
             {
-                from: `${PATHS.src}/img`,
+                from: `${PATHS.src}/${PATHS.assets}img`,
                 to: `${PATHS.assets}img`
+            },
+            {
+                from: `${PATHS.src}/${PATHS.assets}fonts`,
+                to: `${PATHS.assets}fonts`
             },
             {
                 from: `${PATHS.src}/static`,
@@ -168,6 +197,13 @@ module.exports = {
         new SpriteLoaderPlugin({ 
             plainSprite: true 
         }),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        
+        // Automatic creations any html pages (Don't forget to RERUN dev server)
+        ...PAGES.map( page => new HtmlWebpackPlugin({
+            template: `${PAGES_DIR}/${page}`, // .pug
+            //filename: `./${page}` // для html -> html
+            filename: `./${page.replace(/\.pug$/,'.html')}` // .html
+        }))
     ]
 }
