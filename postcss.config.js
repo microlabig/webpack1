@@ -6,7 +6,7 @@ module.exports = {
         require('css-mqpacker'), // группировка всех одинаковых медиазапросов 
         require('postcss-inline-svg')({ // инлайновые svg
             removeFill: true,
-            path: "../img/icons"
+            paths: ["./src/assets/img/icons/"]
         }),
         require('cssnano') ({ // уменьшение css
             preset: [

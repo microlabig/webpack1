@@ -5,7 +5,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require("svg-sprite-loader/plugin");
 const { VueLoaderPlugin } = require('vue-loader');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin'); // вместо uglifyJS
 
 // Main consts
@@ -87,32 +86,35 @@ module.exports = {
                     }
                   ]
             },
+
             {
                 test: /\.svg$/,
                 use: [
-                {
-                    loader: "svg-sprite-loader",
-                    options: {
-                        extract: true,
-                        //spriteFilename: svgPath => `sprite${svgPath.substr(-4)}`
-                    }
-                },
-                "svg-transform-loader",
-                {
-                    loader: "svgo-loader",
-                    options: {
-                    plugins: [
-                        { removeTitle: true },
-                        {
-                            removeAttrs: {
-                                attrs: "(fill|stroke)"
-                            }
+                    {
+                        loader: "svg-sprite-loader",
+                        options: {
+                            extract: true
+                            // extract: true,
+                            // spriteFilename: svgPath => `sprite${svgPath.substr(-4)}`
                         }
-                    ]
+                    },
+                    "svg-transform-loader",
+                    {
+                        loader: "svgo-loader",
+                        options: {
+                            plugins: [
+                                { removeTitle: true },
+                                {
+                                    removeAttrs: {
+                                        attrs: "(fill|stroke)"
+                                    }
+                                }
+                            ]
+                        }
                     }
-                }
                 ]
-            },        
+            },
+
             { 
                 test: /\.js$/, // обращаемся ко всем js файлам
                 loaders: 'babel-loader',
@@ -187,9 +189,8 @@ module.exports = {
     },
     // зарегистрируем используемые плагины
     plugins: [ 
-        new CleanWebpackPlugin(), // очистка output.path
         new MiniCssExtractPlugin({
-            filename: `${PATHS.assets}css/[name].[hash].css` // на выходе будет app.css
+            filename: `${PATHS.assets}css/[name].[hash].css` 
         }),
         /* 
         // для .html
