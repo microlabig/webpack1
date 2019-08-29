@@ -1,10 +1,10 @@
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // для очистки папки output.path перед работой
 
 const buildWebpackConfig = merge(baseWebpackConfig, {
     mode: 'production',
-    plugins: [
+    plugins: [        
         new CleanWebpackPlugin() // очистка output.path
     ]
 });

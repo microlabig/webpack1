@@ -18,9 +18,9 @@ module.exports = {
             ]
         }),
         require('postcss-pxtorem')({ // px2rem
-            rootValue: 16,
-            propList: ["*", "!*border*"],
-            selectorBlackList: [/^html$/]
+            rootValue: 16,  // по-умолчанию, размер шрифта 16px
+            propList: ["*", "!*border*"], // игнорировать CSS св-ва, в которых содержится слово "border"
+            selectorBlackList: [/^(html|pug)$/] // игнорировать в html- и pug-файлах
         })
     ]
 }
