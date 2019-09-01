@@ -13,7 +13,6 @@ import './assets/css/main.css';
 import './assets/scss/main.scss';
 
 // способы импортирования vue.js:
-
 //1
 //import 'vue';
 
@@ -47,3 +46,6 @@ new Vue({
     render: h => h(Example)
 });
  */
+/* 
+console.log($);
+console.log(jQuery); */
