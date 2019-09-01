@@ -2,12 +2,12 @@
 
 ## Для запуска сборки склонируйте ее к себе в директорию, далее выполните следующие команды
 1. Установка зависимостей:
-npm i
+npm i (или yarn install)
 2. Запуск сборки:
 a. Запуск dev-сервера
-npm run dev
+npm run dev (или yarn dev)
 б. Компиляция проекта на продакшн
-npm run build
+npm run build (или yarn build)
 
 ## Основной используемый стек:
 - webpack, babel
@@ -15,6 +15,7 @@ npm run build
 - SVG
 - PUG
 - Vue.js, Vuex (для примера)
+- jQuery
 
 ## Структура папок и файлов
 ```
@@ -59,8 +60,8 @@ npm run build
   "scripts": {
     // скрипт разработки проекта
     "dev": "webpack-dev-server --open --config ./build/webpack.dev.conf.js",
-    // скрипт компиляции проекта на продакшн
-    "build": "webpack --config ./build/webpack.build.conf.js",
+    // скрипт компиляции проекта на продакшн (удаляет папку dist и компилирует проект)
+    "build": "rm -rf ./dist && webpack --config ./build/webpack.build.conf.js",
     // скрипт, подсчитывающий кол-во комментариев, пустых строк и т.п.
     "cloc": "./node_modules/.bin/cloc --exclude-dir node_modules,.meteor,.vscode,typings,typings-own,.git,.idea ./"
   },
