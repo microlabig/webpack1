@@ -64,7 +64,12 @@ module.exports = {
     module: { 
         // правила (массив объектов) преобразования определённых файлов соответствующими загрузчиками
         rules: [ 
-            
+            {
+                enforce: 'pre',
+                test: /\.(js|vue)$/,
+                loader: 'eslint-loader',
+                exclude: /node_modules/
+            },            
             // изображения
             { 
                 test: /\.(png|jpe?g|gif|webp?)$/, // обращаемся ко всем изображениям и шрифтам                
@@ -126,22 +131,33 @@ module.exports = {
             // скрипты   
             { 
                 test: /\.js$/, // обращаемся ко всем js файлам
-                loaders: 'babel-loader',
                 exclude: '/node_modules/', // исключаем папку node_modules
-                options: {
-                    presets: ['@babel/preset-env'],
-                    plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт и для async/await
-                }
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-env'],
+                            plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт и для async/await
+                        }
+                    },
+                    'eslint-loader'
+                ]
             },
             // VUE
             { 
                 test: /\.vue$/, // обращаемся ко всем vue файлам
-                loaders: 'vue-loader',
-                options: {
-                    loader: {
-                        scss: 'vue-style-loader!css-loader!sass-loader' // указывает на обработку css-стилей
-                    }
-                }
+                exclude: '/node_modules/',
+                use: [
+                    {
+                        loader: 'vue-loader',
+                        options: {
+                            loader: {
+                                scss: 'vue-style-loader!css-loader!sass-loader' // указывает на обработку css-стилей
+                            }
+                        }
+                    },
+                    'eslint-loader'
+                ]
             },
             // SCSS
             {

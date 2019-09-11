@@ -1,0 +1,47 @@
+{
+    "parserOptions": {
+        "parser": "babel-eslint",
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    },
+    "extends": [
+        "plugin:vue/recommended",
+        "airbnb"
+    ],
+    "plugins": [
+        "eslint-plugin-vue",
+        "eslint-plugin-react"
+    ],
+    "rules": {
+        "strict": 0,
+        "linebreak-style": 0,
+        "indent": [
+            "error",
+            2
+        ],
+        "comma-dangle": [
+            "arrays": "never",
+            "objects": "never",
+            "imports": "never",
+            "exports": "never",
+            "functions": "never"
+        ],
+        "semi": "never",
+        "vue": {
+            "script-indent": [
+                "error", "tab",
+                {
+                    "baseIndent": 1
+                }
+            ]
+        }
+    },
+    "overrides": [
+        {
+            "files": ["*.vue"],
+            "rules": {
+                "indent": "off"
+            }
+        }
+    ]
+}
