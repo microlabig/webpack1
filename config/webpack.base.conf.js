@@ -26,7 +26,7 @@ module.exports = {
     },
     // точка входа
     entry: {
-        app: ["@babel/polyfill/noConflict", PATHS.src], // Если вам нужно загрузить полифайл (@babel/polyfill) более одного раза, используйте @babel/polyfill/noConflict, чтобы обойти предупреждение.
+        app: ["@babel/polyfill/noConflict", PATHS.src], // Если вам нужно загрузить полифил (@babel/polyfill) более одного раза, используйте @babel/polyfill/noConflict, чтобы обойти предупреждение.
         lk: ["@babel/polyfill/noConflict", `${PATHS.src}/lk.js`] // напр., личный кабинет
     },
     // точка выхода

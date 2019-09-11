@@ -8,9 +8,12 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
     plugins: [
         new ImageminPlugin(
             { 
-                test: /\.(jpe?g|png|gif|webp)$/i,
+                test: /\.(jpe?g|png|gif)$/i,
                 pngquant: { // оптимизация png
                     quality: '65-90'
+                },
+                gifsicle: {
+                    optimizationLevel: 2
                 },
                 plugins: [
                     imageminMozjpeg({ // оптимизация jpe?g
