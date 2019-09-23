@@ -9,7 +9,7 @@ export default {
 
     },
     getters: {
-        getMessage (state) {
+        getMessage(state) {
             return state.message;
         }
     }

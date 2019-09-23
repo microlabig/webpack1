@@ -17,28 +17,37 @@
         "linebreak-style": 0,
         "indent": [
             "error",
-            2
+            4
         ],
-        "comma-dangle": [
-            "arrays": "never",
-            "objects": "never",
-            "imports": "never",
-            "exports": "never",
-            "functions": "never"
-        ],
+        "comma-dangle": ["error", "never"],
         "semi": "never",
         "vue": {
             "script-indent": [
-                "error", "tab",
+                "error",
+                "tab",
                 {
                     "baseIndent": 1
                 }
             ]
-        }
+        },
+        "no-new": "off",
+        "arrow-parens": "off",
+        "import/first": "off",
+        "no-console": [
+            "error",
+            {
+                "allow": [
+                    "warn",
+                    "error"
+                ]
+            }
+        ]
     },
     "overrides": [
         {
-            "files": ["*.vue"],
+            "files": [
+                "*.vue"
+            ],
             "rules": {
                 "indent": "off"
             }

@@ -64,12 +64,12 @@ module.exports = {
     module: { 
         // правила (массив объектов) преобразования определённых файлов соответствующими загрузчиками
         rules: [ 
-            {
+            /* {
                 enforce: 'pre',
                 test: /\.(js|vue)$/,
                 loader: 'eslint-loader',
                 exclude: /node_modules/
-            },            
+            },   */          
             // изображения
             { 
                 test: /\.(png|jpe?g|gif|webp?)$/, // обращаемся ко всем изображениям и шрифтам                
@@ -140,7 +140,7 @@ module.exports = {
                             plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт и для async/await
                         }
                     },
-                    'eslint-loader'
+                    //'eslint-loader'
                 ]
             },
             // VUE
@@ -156,7 +156,7 @@ module.exports = {
                             }
                         }
                     },
-                    'eslint-loader'
+                    //'eslint-loader'
                 ]
             },
             // SCSS

@@ -1,4 +1,4 @@
-// --------------------------- 
+// ---------------------------
 // основной файл (точка входа)
 // ---------------------------
 
@@ -13,12 +13,13 @@ import './assets/css/main.css';
 import './assets/scss/main.scss';
 
 // способы импортирования vue.js:
-//1
-//import 'vue';
+// 1
+// import 'vue';
 
-//2
-window.Vue = require('vue');
+// 2
 import store from './store';
+
+window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/Example.vue').default);
 
@@ -37,15 +38,30 @@ const app = new Vue({
     }
 });
 
-//3
+// 3
 /* import Vue from 'vue';
+
+import store from './store';
+
 import Example from './components/Example.vue';
 
 new Vue({
-    el: "#app",
+    el: '#app',
+    store,    
+    data() {
+        return {
+            component: false
+        }
+    },
+    methods: {
+        showComponent() {
+            this.component = !this.component;
+        }
+    },
     render: h => h(Example)
-});
- */
-/* 
+}); */
+
+/*
 console.log($);
-console.log(jQuery); */
+console.log(jQuery);
+*/
