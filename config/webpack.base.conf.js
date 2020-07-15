@@ -1,6 +1,7 @@
 const path = require('path'); // для корректного поиска путей на кроссплатформах
 const fs = require('fs'); // для доступа к файловой системе
-const webpack = require('webpack'); // сам webpack (из коробки уже есть много полезных плагинов)
+const webpack = require('webpack'); // сам webpack 
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // для подключения css в index.js (генерирует отдельный CSS-файл, который будет подключаться в HTML-файл обычным образом через тег <link> (не инлайново как в теге style))
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // для копирования статичных файлов (из папки static, изображений и шрифтов)
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // для работы с HTML-файлами
@@ -72,7 +73,7 @@ module.exports = {
             },   */          
             // изображения
             { 
-                test: /\.(png|jpe?g|gif|webp?)$/, // обращаемся ко всем изображениям и шрифтам                
+                test: /\.(png|jpe?g|gif|webp?)$/, // обращаемся ко всем изображениям                 
                 loaders: 'file-loader',
                 options: {
                     name: '[name].[ext]'
